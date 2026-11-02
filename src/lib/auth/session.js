@@ -44,6 +44,7 @@ export function verifySessionToken(token) {
     if (
       typeof session.email !== "string"
       || !session.email.includes("@")
+      || !Number.isInteger(session.issuedAt)
       || !Number.isInteger(session.expiresAt)
       || session.expiresAt <= now
       || session.issuedAt > now + 60

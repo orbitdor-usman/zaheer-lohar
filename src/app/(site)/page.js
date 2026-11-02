@@ -11,6 +11,10 @@ import { PopularSongs } from "@/components/home/PopularSongs";
 import { HomeFollowSection } from "@/components/home/follow-section";
 import { SocialChannels } from "@/components/social/social-channels";
 import { createPageMetadata } from "@/lib/seo/site";
+import { HomeDiscovery } from "@/components/home/discovery-section";
+import { MilestoneSection } from "@/components/home/milestone-section";
+import { QuestionsSection } from "@/components/home/questions-section";
+import "@/components/home/home-extras.css";
 
 const bannerAlt = "Zaheer Lohar performing with a microphone beneath warm stage lights";
 
@@ -81,6 +85,9 @@ export default function Home() {
       <PopularSongs />
       <HomeFollowSection />
       <PlaylistPreview />
+      <MilestoneSection />
+      <HomeDiscovery />
+      <QuestionsSection />
       <BookingCallout />
     </main>
   );

@@ -1,22 +1,12 @@
-import { DM_Sans, Geist, Geist_Mono } from "next/font/google";
+import { Rajdhani } from "next/font/google";
 import { artistDescription, artistKeywords, artistName, siteUrl } from "@/lib/seo/site";
 import "./globals.css";
 import "./motion.css";
+import "./site-theme.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const headingFont = DM_Sans({
-  variable: "--font-dm-sans",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+const rajdhani = Rajdhani({
+  variable: "--font-rajdhani",
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -64,7 +54,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${headingFont.variable} h-full antialiased`}
+      className={`${rajdhani.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" cz-shortcut-listen="true">{children}</body>
     </html>

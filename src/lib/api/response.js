@@ -45,16 +45,32 @@ export function handleApiError(error) {
 }
 
 export async function readJsonBody(request, maxBytes = 64 * 1024) {
-  const contentType = request.headers.get("content-type") || "";
-  if (!contentType.toLowerCase().includes("application/json")) {
+  const contentType = (request.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
+  if (contentType !== "application/json") {
     throw new ApiError("Send this request as JSON.", 415, "UNSUPPORTED_MEDIA_TYPE");
   }
   const length = Number(request.headers.get("content-length") || 0);
   if (length > maxBytes) throw new ApiError("The request is too large.", 413, "BODY_TOO_LARGE");
-  const raw = await request.text();
-  if (Buffer.byteLength(raw, "utf8") > maxBytes) {
-    throw new ApiError("The request is too large.", 413, "BODY_TOO_LARGE");
+  const reader = request.body?.getReader();
+  const chunks = [];
+  let size = 0;
+  if (reader) {
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.byteLength;
+        if (size > maxBytes) {
+          await reader.cancel().catch(() => {});
+          throw new ApiError("The request is too large.", 413, "BODY_TOO_LARGE");
+        }
+        chunks.push(value);
+      }
+    } finally {
+      reader.releaseLock();
+    }
   }
+  const raw = Buffer.concat(chunks, size).toString("utf8");
   try {
     const body = JSON.parse(raw);
     if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("Expected an object.");

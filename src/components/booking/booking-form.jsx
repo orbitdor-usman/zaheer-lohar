@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowRight, CheckCircle2, LoaderCircle, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -79,6 +80,7 @@ export function BookingForm() {
       <BookingField id="booking-message" label="Additional message"><Textarea id="booking-message" name="message" maxLength={3000} rows={5} placeholder="Tell us about the schedule, production needs, or anything else we should know." /></BookingField>
       <div className="booking-honeypot" aria-hidden="true"><Label htmlFor="booking-website">Leave this field empty</Label><Input id="booking-website" name="website" tabIndex={-1} autoComplete="off" /></div>
       <div className="form-submit booking-form__submit"><Button type="submit" className="button-dark" disabled={busy}>{busy ? <><LoaderCircle size={16} className="booking-spinner" /> Sending request…</> : <>Send booking request <ArrowRight size={16} /></>}</Button></div>
+      <p className="form-privacy-note">Your inquiry will be used to respond to your request. Read our <Link href="/privacy-policy">privacy policy</Link>.</p>
     </form>
   );
 }

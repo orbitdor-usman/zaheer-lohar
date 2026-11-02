@@ -27,6 +27,7 @@ export function SiteFooter() {
           <p>Thank you for listening, sharing, and being here.</p>
         </div>
         <nav className="site-footer__links" aria-label="Footer navigation"><span>Explore</span>{footerLinks.map((link) => <Link href={link.href} key={link.href}>{link.label}</Link>)}<a href="mailto:hello@zaheerlohar.com">Email <ArrowUpRight size={12} /></a></nav>
+        <nav className="site-footer__links" aria-label="Information and policies"><span>Information</span><Link href="/faq">Frequently asked questions</Link><Link href="/contact">Contact</Link><Link href="/privacy-policy">Privacy policy</Link><Link href="/cookie-policy">Cookie policy</Link><Link href="/terms">Terms of use</Link></nav>
         <SocialFooterCallout />
       </div>
       <div className="page-shell site-footer__bottom">

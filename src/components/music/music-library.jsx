@@ -38,16 +38,17 @@ function MusicCard({ song, index }) {
   </article>;
 }
 
-export function MusicLibrary() {
+export function MusicLibrary({ initialData = null }) {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [songs, setSongs] = useState([]);
-  const [pagination, setPagination] = useState({ page: 1, total: 0, totalPages: 0 });
-  const [loading, setLoading] = useState(true);
+  const [songs, setSongs] = useState(initialData?.songs || []);
+  const [pagination, setPagination] = useState(initialData?.pagination || { page: 1, total: 0, totalPages: 0 });
+  const [loading, setLoading] = useState(!initialData);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
   const activeRequest = useRef(null);
+  const hasSearched = useRef(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -82,6 +83,10 @@ export function MusicLibrary() {
   }, [search]);
 
   useEffect(() => {
+    // Keep server-rendered results on mount, including Strict Mode's second
+    // effect setup. Once a search has run, clearing it must fetch the full list.
+    if (initialData && !hasSearched.current && !search) return;
+    hasSearched.current = true;
     const timer = window.setTimeout(() => {
       setPage(1);
       setSongs([]);
@@ -92,7 +97,7 @@ export function MusicLibrary() {
       window.clearTimeout(timer);
       activeRequest.current?.abort();
     };
-  }, [load]);
+  }, [initialData, load, search]);
 
   return <section className="music-library page-shell" aria-labelledby="music-library-title">
     <div className="music-library__toolbar"><div><p className="eyebrow"><Disc3 size={13} /> From the library</p><h2 id="music-library-title">Songs &amp; stories</h2><p className="music-library__count">{pagination.total} {pagination.total === 1 ? "release" : "releases"}</p></div><label className="music-library__search"><Search size={17} /><span className="sr-only">Search songs</span><Input type="search" maxLength={100} placeholder="Search songs" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} /></label></div>

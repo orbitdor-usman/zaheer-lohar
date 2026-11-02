@@ -1,7 +1,7 @@
 import { PlaylistsBrowser } from "@/components/playlists/playlists-browser";
 import { cache } from "react";
 import { connectDb } from "@/lib/db/connection";
-import { getSettings } from "@/lib/services/playlist-manager";
+import { getSettings, listFeaturedPlaylists, listPublicPlaylists } from "@/lib/services/playlist-manager";
 import { createPageMetadata } from "@/lib/seo/site";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +29,28 @@ export async function generateMetadata() {
   });
 }
 
-export default function PlaylistsPage() {
-  return <PlaylistsBrowser />;
+async function getInitialPlaylists() {
+  try {
+    await connectDb();
+    const settings = await readSettings();
+    const limit = Math.min(48, Math.max(1, Number(settings?.defaultPlaylistLimit) || 12));
+    const [featured, result] = await Promise.all([
+      listFeaturedPlaylists(),
+      listPublicPlaylists({ page: 1, limit }),
+    ]);
+    const initialData = JSON.parse(JSON.stringify({
+      settings: { title: settings?.playlistPageTitle, description: settings?.playlistPageDescription },
+      featured,
+      playlists: result.rows,
+      pagination: { page: 1, limit, total: result.total, totalPages: Math.ceil(result.total / limit) },
+    }));
+    return initialData;
+  } catch {
+    return null;
+  }
+}
+
+export default async function PlaylistsPage() {
+  const initialData = await getInitialPlaylists();
+  return <PlaylistsBrowser initialData={initialData} />;
 }

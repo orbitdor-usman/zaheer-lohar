@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { PlaylistDetail } from "@/components/playlists/playlist-detail";
 import { connectDb } from "@/lib/db/connection";
 import { getPublicPlaylist, listPlaylistVideos } from "@/lib/services/playlist-manager";
-import { createPageMetadata } from "@/lib/seo/site";
+import { absoluteUrl, createPageMetadata } from "@/lib/seo/site";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +48,7 @@ export default async function PlaylistDetailPage({ params }) {
     description: playlist.description,
     numTracks: playlist.videoCount,
     image: playlist.thumbnail || undefined,
-    url: process.env.NEXT_PUBLIC_SITE_URL ? new URL(`/playlists/${encodeURIComponent(slug)}`, process.env.NEXT_PUBLIC_SITE_URL).toString() : undefined,
+    url: absoluteUrl(`/playlists/${encodeURIComponent(slug)}`),
     sameAs: playlist.playlistUrl,
   } : null;
   return (

@@ -7,6 +7,9 @@ import { ArrowUpRight, Users } from "lucide-react";
 import { SocialBrandIcon } from "@/components/icons/social-brand-icon";
 import { apiRequest } from "@/lib/api/client";
 import { SOCIAL_CHANNELS } from "@/lib/social-links";
+import "./hero-social.css";
+
+const OFFICIAL_YOUTUBE_URL = "https://www.youtube.com/channel/UCdv_JXKg3baC43xD-3hw33Q";
 
 function formatAudience(value) {
   return new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(value);
@@ -252,16 +255,20 @@ export function SocialChannels({ variant = "cards", autoScroll = false, animateC
   }, [autoScroll, channelCount, channelSignature, links, variant]);
 
   if (variant === "hero") {
-    if (links !== null && !channels.length) return null;
-    const heroChannels = links === null
-      ? SOCIAL_CHANNELS.slice(0, 4).map((channel) => ({ ...channel, url: null, followers: null, loading: true }))
-      : channels.slice(0, 4);
+    // Keep the official YouTube channel available even while settings load or
+    // if the settings service is temporarily unavailable. The site's artist
+    // highlights already state the conservative 1M+ subscriber milestone.
+    const configuredYouTube = channels.find((channel) => channel.key === "youtube");
+    const heroChannels = [
+      { ...SOCIAL_CHANNELS[0], ...configuredYouTube, url: configuredYouTube?.url || OFFICIAL_YOUTUBE_URL, fallbackAudience: configuredYouTube?.followers == null },
+      ...channels.filter((channel) => channel.key !== "youtube").slice(0, 3),
+    ];
     return <div className="hero-social" aria-label="Follow Zaheer Lohar">
       <span className="hero-social__label">Follow the music</span>
       <div className="hero-social__links">
         {heroChannels.map((channel) => <a key={channel.key} href={channel.url || "/follow"} target={channel.url ? "_blank" : undefined} rel={channel.url ? "noopener noreferrer" : undefined} data-platform={channel.key} aria-label={`Follow Zaheer on ${channel.label}`}>
           <SocialBrandIcon platform={channel.key} size={16} />
-          <span>{channel.loading || (channel.followers !== null && channel.followers !== undefined) ? <><strong><AnimatedAudience value={channel.followers} loading={channel.loading} /></strong><small>{channel.countLabel.toLowerCase()}</small></> : <strong>{channel.label}</strong>}</span>
+          <span>{channel.fallbackAudience ? <><strong>1M+</strong><small>subscribers</small></> : channel.followers !== null && channel.followers !== undefined ? <><strong><AnimatedAudience value={channel.followers} /></strong><small>{channel.countLabel.toLowerCase()}</small></> : <strong>{channel.label}</strong>}</span>
         </a>)}
         <Link href="/follow" className="hero-social__all">All channels <ArrowUpRight size={13} /></Link>
       </div>

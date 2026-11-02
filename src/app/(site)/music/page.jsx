@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowRight, ArrowUpRight, Disc3, Music2 } from "lucide-react";
 import { connectDb } from "@/lib/db/connection";
-import { getRandomPublicVideo } from "@/lib/services/playlist-manager";
+import { listPublicVideos } from "@/lib/services/playlist-manager";
 import { MusicLibrary } from "@/components/music/music-library";
 import { PlaylistImage } from "@/components/playlists/playlist-image";
 import { createPageMetadata } from "@/lib/seo/site";
@@ -15,12 +15,14 @@ export const metadata = createPageMetadata({
 
 export const dynamic = "force-dynamic";
 
-async function getHeroSong() {
+async function getMusicData() {
   try {
     await connectDb();
-    return await getRandomPublicVideo();
+    const library = await listPublicVideos({ page: 1, limit: 18 });
+    const heroSong = library.rows.find((song) => song.thumbnail) || null;
+    return JSON.parse(JSON.stringify({ heroSong, library: { songs: library.rows, pagination: { page: 1, total: library.total, totalPages: Math.ceil(library.total / 18) } } }));
   } catch {
-    return null;
+    return { heroSong: null, library: null };
   }
 }
 
@@ -29,7 +31,7 @@ function MusicHeroArt() {
 }
 
 export default async function MusicPage() {
-  const heroSong = await getHeroSong();
+  const { heroSong, library } = await getMusicData();
 
   return <main className="inner-page music-page">
     <section className="music-hero" aria-labelledby="music-title">
@@ -50,6 +52,6 @@ export default async function MusicPage() {
         </a> : <MusicHeroArt />}
       </div>
     </section>
-    <MusicLibrary />
+    <MusicLibrary initialData={library} />
   </main>;
 }

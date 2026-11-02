@@ -76,26 +76,33 @@ export async function getPlaylist(playlistId) {
 }
 
 export async function getVideoDetails(videoIds) {
-  const videos = [];
+  const batches = [];
   for (let index = 0; index < videoIds.length; index += 50) {
-    const batch = videoIds.slice(index, index + 50);
-    const payload = await requestYouTube("videos", {
-      part: "contentDetails,snippet",
-      id: batch.join(","),
-      maxResults: "50",
-    });
-    for (const item of payload?.items || []) {
-      videos.push({
+    batches.push(videoIds.slice(index, index + 50));
+  }
+  const results = new Array(batches.length);
+  let nextBatch = 0;
+  async function worker() {
+    while (nextBatch < batches.length) {
+      const index = nextBatch++;
+      const batch = batches[index];
+      const payload = await requestYouTube("videos", {
+        part: "contentDetails,snippet",
+        id: batch.join(","),
+        maxResults: "50",
+      });
+      results[index] = (payload?.items || []).map((item) => ({
         externalVideoId: item.id,
         duration: parseDuration(item.contentDetails?.duration),
         title: String(item.snippet?.title || "Unavailable video").trim().slice(0, 300),
         description: String(item.snippet?.description || "").slice(0, 5000),
         thumbnail: chooseThumbnail(item.snippet?.thumbnails),
         publishedAt: item.snippet?.publishedAt ? new Date(item.snippet.publishedAt) : null,
-      });
+      }));
     }
   }
-  return videos;
+  await Promise.all(Array.from({ length: Math.min(4, batches.length) }, () => worker()));
+  return results.flat();
 }
 
 export async function getVideoById(videoId) {

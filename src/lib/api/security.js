@@ -2,15 +2,13 @@ import { createHmac } from "node:crypto";
 import { connectDb } from "@/lib/db/connection";
 import { readSessionFromRequest } from "@/lib/auth/session";
 import { ApiError, failure } from "@/lib/api/response";
+import { trustedClientAddress } from "@/lib/api/client-address";
 
 const RATE_WINDOW_MS = 60 * 1000;
 let rateLimitIndexPromise;
 
 function clientKey(request, name) {
-  const forwardedFor = request.headers.get("x-forwarded-for") || "";
-  const address = forwardedFor.split(",")[0]?.trim()
-    || request.headers.get("x-real-ip")
-    || "unknown";
+  const address = trustedClientAddress(request);
   const salt = process.env.RATE_LIMIT_SALT || process.env.SESSION_SECRET || process.env.MONGODB_URI || "playlist-api";
   return createHmac("sha256", salt).update(`${name}:${address}`).digest("hex");
 }

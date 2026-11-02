@@ -15,6 +15,7 @@ This Next.js app contains the public artist website and a server-backed YouTube 
 - **YouTube API:** Enable YouTube Data API v3 in a Google Cloud project and set its server-side key in `YOUTUBE_API_KEY`. The key is never sent to the browser. Public playlist pages read synchronized MongoDB data and do not contact YouTube.
 - **Performance bookings:** Booking requests are validated and stored in MongoDB, with shared API rate limits, a honeypot, and a 24-hour duplicate fingerprint. `BOOKING_DEDUPE_SECRET` is optional; when omitted, the server derives the HMAC key from the configured session secret or MongoDB connection string.
 - **Canonical origin:** Set `NEXT_PUBLIC_SITE_URL` to the deployed site origin so playlist pages can emit canonical links and social metadata.
+- **Rate-limit client IPs:** Vercel supplies the trusted `x-vercel-forwarded-for` header automatically. On other hosts, set `RATE_LIMIT_TRUSTED_IP_HEADER` only to a header your reverse proxy overwrites with the client IP, and prevent direct access to the app server. Without a trusted header, all clients share one conservative rate-limit bucket. Configure rate limiting at the edge as well, since application limits do not protect against traffic before it reaches the app.
 
 Generate a strong session secret with Node.js:
 

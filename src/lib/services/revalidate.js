@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 
 export function revalidatePlaylistPages(slug) {
+  revalidatePath("/sitemap.xml");
   revalidatePath("/");
   revalidatePath("/playlists");
   revalidatePath("/playlists/[slug]", "page");

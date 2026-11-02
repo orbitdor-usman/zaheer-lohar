@@ -1,0 +1,40 @@
+.home-extra__eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 20px; color: #8b5d39; font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+.home-extra__eyebrow > span { width: 27px; height: 1px; background: currentColor; }
+.home-milestone { overflow: hidden; padding-block: clamp(75px, 9vw, 120px); background: #38251e; color: #fffaf3; }
+.home-milestone .home-extra__eyebrow { color: #dfb992; }
+.home-milestone__layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .8fr); align-items: center; gap: clamp(50px, 9vw, 135px); }
+.home-milestone__copy h2, .home-questions__intro h2 { margin: 0; font-size: clamp(3.2rem, 5.4vw, 5.4rem); font-weight: 500; letter-spacing: -.045em; line-height: .98; }
+.home-milestone__copy h2 em { color: #dfb992; font-style: normal; }
+.home-milestone__copy > p:not(.home-extra__eyebrow) { max-width: 490px; margin: 24px 0 29px; color: #ead9c7; font-size: 16px; line-height: 1.75; }
+.home-milestone__copy > a, .home-questions__intro > a { display: inline-flex; align-items: center; gap: 8px; border-bottom: 1px solid #b9926e; padding-bottom: 6px; color: #fff5e8; font-size: 14px; font-weight: 600; }
+.home-milestone__copy > a + a { margin-left: 24px; }
+.home-milestone__copy > a:hover, .home-questions__intro > a:hover { color: #efca9e; }
+.home-milestone__visual { position: relative; width: min(100%, 410px); justify-self: end; margin: 0; padding: 19px; border: 1px solid rgb(230 205 174 / 25%); background: rgb(255 255 255 / 5%); }
+.home-milestone__image { position: relative; aspect-ratio: 1.1; overflow: hidden; background: #d6d5cd; }
+.home-milestone__image img { object-fit: cover; object-position: center 47%; }
+.home-milestone__visual figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-top: 16px; color: #dfc2a5; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.home-milestone__visual figcaption strong { color: #fff8ed; font-weight: 600; }
+.home-questions { padding-block: clamp(80px, 9vw, 125px); background: #fbf8f3; }
+.home-questions__layout { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); align-items: start; gap: clamp(50px, 9vw, 130px); }
+.home-questions__intro h2 { color: #38251e; }
+.home-questions__intro h2 em { color: #a8754a; font-style: normal; }
+.home-questions__intro > p:not(.home-extra__eyebrow) { max-width: 370px; margin: 22px 0 26px; color: #6f5c4e; font-size: 16px; line-height: 1.7; }
+.home-questions__intro > a { color: #69432d; border-color: #cdb49c; }
+.home-questions__intro > a:hover { color: #a66f45; }
+.home-questions__list { border-top: 1px solid #e5d9cc; }
+.home-questions__list details { border-bottom: 1px solid #e5d9cc; }
+.home-questions__list summary { display: flex; min-height: 78px; align-items: center; justify-content: space-between; gap: 20px; color: #422d23; font-size: 19px; font-weight: 600; cursor: pointer; list-style: none; }
+.home-questions__list summary::-webkit-details-marker { display: none; }
+.home-questions__list summary svg { flex: 0 0 auto; color: #a8754a; transition: transform 180ms ease; }
+.home-questions__list details[open] summary svg { transform: rotate(45deg); }
+.home-questions__list details > div { max-width: 510px; padding: 0 32px 25px 0; color: #6f5c4e; font-size: 15px; line-height: 1.75; }
+.home-questions__list details > div a { color: #69432d; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 700px) {
+  .home-milestone__layout, .home-questions__layout { grid-template-columns: 1fr; gap: 38px; }
+  .home-milestone__visual { width: min(100%, 420px); justify-self: start; padding: 13px; }
+  .home-milestone__copy h2, .home-questions__intro h2 { font-size: clamp(3rem, 11vw, 4.4rem); }
+  .home-milestone__copy > a + a { margin: 18px 0 0; }
+  .home-milestone__copy > a { display: flex; width: fit-content; }
+  .home-questions__list summary { min-height: 70px; font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) { .home-questions__list summary svg { transition: none; } }

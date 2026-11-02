@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowDown, ArrowRight, ArrowUpRight, Search, Sparkles } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { apiRequest, apiUrl } from "@/lib/api/client";
 import { PlaylistCard } from "@/components/playlists/playlist-card";
 import { PlaylistImage } from "@/components/playlists/playlist-image";
@@ -17,17 +17,18 @@ function PlaylistCardSkeleton() {
   return <div className="playlist-skeleton" aria-hidden="true"><div className="playlist-skeleton__art" /><div className="playlist-skeleton__line playlist-skeleton__line--title" /><div className="playlist-skeleton__line" /><div className="playlist-skeleton__line playlist-skeleton__line--short" /></div>;
 }
 
-export function PlaylistsBrowser() {
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
-  const [featured, setFeatured] = useState([]);
-  const [playlists, setPlaylists] = useState([]);
+export function PlaylistsBrowser({ initialData = null }) {
+  const [settings, setSettings] = useState(initialData?.settings || DEFAULT_SETTINGS);
+  const [featured, setFeatured] = useState(initialData?.featured || []);
+  const [playlists, setPlaylists] = useState(initialData?.playlists || []);
   const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState({ total: 0, totalPages: 0 });
+  const [pagination, setPagination] = useState(initialData?.pagination || { total: 0, totalPages: 0 });
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialData);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
+  const hasSearched = useRef(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 320);
@@ -53,11 +54,14 @@ export function PlaylistsBrowser() {
   }, [debouncedSearch]);
 
   useEffect(() => {
+    if (initialData && !hasSearched.current && !debouncedSearch) return;
+    hasSearched.current = true;
     const timer = window.setTimeout(() => { void loadPlaylists({ nextPage: 1 }); }, 0);
     return () => window.clearTimeout(timer);
-  }, [loadPlaylists]);
+  }, [debouncedSearch, initialData, loadPlaylists]);
 
   useEffect(() => {
+    if (initialData) return;
     let active = true;
     Promise.allSettled([
       apiRequest("/api/playlists/featured"),
@@ -68,7 +72,7 @@ export function PlaylistsBrowser() {
       if (settingsResult.status === "fulfilled") setSettings(settingsResult.value.data);
     });
     return () => { active = false; };
-  }, []);
+  }, [initialData]);
 
   const heroPlaylist = featured[0];
 

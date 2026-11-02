@@ -11,7 +11,9 @@ export async function GET(request) {
     const search = url.searchParams.get("search") || "";
     if (search.length > 100) return Response.json({ success: false, message: "Search must be 100 characters or fewer.", error: "INVALID_SEARCH" }, { status: 400 });
     const result = await listPublicVideos({ page, limit, search });
-    return successPaginated(result.rows, paginationMeta({ page, limit, total: result.total }));
+    return successPaginated(result.rows, paginationMeta({ page, limit, total: result.total }), {
+      headers: { "Cache-Control": "public, max-age=0, s-maxage=60, stale-while-revalidate=300" },
+    });
   } catch (error) {
     return handleApiError(error);
   }

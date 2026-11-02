@@ -1,0 +1,66 @@
+/* Warm, light palette drawn from the amber stage lighting in the home hero. */
+.motion-root {
+  --paper: #fffdf9;
+  --paper-soft: #f8f3ed;
+  --ink: #30231c;
+  --ink-soft: #6d5c50;
+  --brand: #8b5636;
+  --brand-dark: #603a27;
+  --line: #e7d9cb;
+  --ring: #9a6641;
+  --background: #fffdf9;
+  --foreground: #30231c;
+  --primary: #563523;
+  --primary-foreground: #fffdf9;
+  --secondary: #f4ece3;
+  --secondary-foreground: #493325;
+  --muted: #f5eee7;
+  --muted-foreground: #76665a;
+  --accent: #f5e9db;
+  --accent-foreground: #6c412c;
+  --border: #e7d9cb;
+  --input: #decfbe;
+  background: #fffdf9;
+  color: #30231c;
+}
+
+.motion-root .site-header:not(.site-header--hero) { background: rgb(255 252 248 / 97%); border-color: #eadfd4; }
+.motion-root .site-header:not(.site-header--hero) .wordmark__name { color: #30231c; }
+.motion-root .site-header:not(.site-header--hero) .site-nav > a:not(.site-nav__booking) { color: #604b3d; }
+.motion-root .site-nav__booking, .motion-root .button-dark { border-color: #563523; background: #563523; color: #fff; }
+.motion-root .site-nav__booking:hover:not(:disabled), .motion-root .button-dark:hover:not(:disabled) { border-color: #865436; background: #865436; color: #fff; }
+.motion-root .site-header--hero .site-nav__booking { border-color: #fff8ef; background: #fff8ef; color: #553724; }
+.motion-root .site-header--hero .site-nav__booking:hover:not(:disabled) { border-color: #efcfaa; background: #efcfaa; color: #38251b; }
+.motion-root .site-header--hero .site-nav > a:hover, .motion-root .site-header--hero .site-nav > a[aria-current="page"] { color: #f0c18e; }
+
+.motion-root .home-about { background: linear-gradient(135deg, #fffdf9 0%, #f8f0e7 100%); border-color: #eadfd4; }
+.motion-root .latest-songs, .motion-root .popular-songs, .motion-root .home-follow { background: #fffdf9; border-color: #eee3d8; }
+.motion-root .follow-page { background: #f8f2eb; }
+.motion-root .home-playlists, .motion-root .home-discovery { background: #fff; }
+.motion-root .home-discovery__grid, .motion-root .home-discovery__card { border-color: #ddcbbb; }
+.motion-root .home-about__facts, .motion-root .home-about__facts > div { border-color: #e7d9cb; }
+.motion-root .home-about__copy h2, .motion-root .home-section-heading h2, .motion-root .popular-songs__heading h2, .motion-root .home-discovery__intro h2, .motion-root .home-discovery__card h3 { color: #30231c; }
+.motion-root .home-about__copy > p:not(.eyebrow), .motion-root .home-discovery__intro > p, .motion-root .home-discovery__card p { color: #6d5c50; }
+.motion-root .home-about__copy .eyebrow, .motion-root .home-section-heading .eyebrow, .motion-root .home-discovery__intro .eyebrow { color: #986b49; }
+.motion-root .home-section-heading h2 > span, .motion-root .popular-songs__heading h2 > span, .motion-root .popular-songs__heading .eyebrow svg, .motion-root .home-discovery__intro h2 em, .motion-root .home-discovery__card-top { color: #a36239; }
+.motion-root .home-about__copy > a, .motion-root .home-section-heading > a, .motion-root .home-discovery__card a, .motion-root .home-follow__more { color: #774b30; border-color: #c5a88e; }
+.motion-root .home-about__copy > a:hover, .motion-root .home-section-heading > a:hover, .motion-root .home-discovery__card a:hover { color: #4a2d1e; }
+
+.motion-root .playlist-hero, .motion-root .music-hero, .motion-root .follow-hero {
+  background: radial-gradient(ellipse at 78% 44%, rgb(185 116 62 / 24%), transparent 35%), linear-gradient(118deg, #251a15 0%, #3d291e 62%, #533526 100%);
+}
+.motion-root .playlist-hero-art__disc, .motion-root .music-hero-art__disc { background: repeating-radial-gradient(circle at center, #281c16 0 16px, #614431 17px 18px, #261a14 19px 32px); }
+.motion-root .follow-hero__orb { background: radial-gradient(circle at 50% 40%, #9b6c47 0%, #61412d 32%, #2a1c16 73%); }
+.motion-root .playlist-hero__period, .motion-root .music-hero__period, .motion-root .follow-hero__period { color: #e7bd8b; }
+.motion-root .playlist-section-heading .eyebrow, .motion-root .follow-section__heading > span:first-child { color: #985c37; }
+.motion-root .follow-section .social-channel-card { border-color: #eadfd3; background: linear-gradient(145deg, #fff, #fffbf6); }
+.motion-root .follow-section .social-channel-card:hover { border-color: #d5b79c; }
+.motion-root .site-footer { background: #281b16; }
+.motion-root .site-footer__links > a:hover, .motion-root .site-footer__bottom a:hover { color: #efc497; }
+.motion-root .home-booking { background-image: linear-gradient(90deg, rgb(37 23 15 / 93%) 0%, rgb(37 23 15 / 79%) 48%, rgb(37 23 15 / 48%) 100%), url("/images/newslatter.png"); }
+.motion-root .information-page__content a, .motion-root .form-privacy-note a, .motion-root .booking-form__submit p a { color: #8b5636; }
+
+@media (max-width: 700px) {
+  .motion-root .site-header:not(.site-header--hero) .site-nav { background: #fffcf8; }
+  .motion-root .site-header--hero .site-nav { background: rgb(42 27 20 / 97%); }
+}

@@ -11,6 +11,10 @@ if (process.env.NODE_ENV !== "production") {
 
 export async function connectDb() {
   if (mongoose.connection.readyState === 1) return mongoose.connection;
+  if (mongoose.connection.readyState === 0 && connectionState.connected) {
+    connectionState.promise = null;
+    connectionState.connected = false;
+  }
   if (!process.env.MONGODB_URI) {
     const error = new Error("MongoDB is not configured.");
     error.code = "DATABASE_NOT_CONFIGURED";

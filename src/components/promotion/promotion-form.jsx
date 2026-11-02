@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowRight, CheckCircle2, LoaderCircle, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,6 +73,6 @@ export function PromotionForm() {
     <Field id="promotion-profile" label="Campaign or profile link"><Input id="promotion-profile" name="profileUrl" type="url" maxLength={300} placeholder="https://" /></Field>
     <Field id="promotion-message" label="Tell us about the promotion" required hint="Include goals, deliverables, audience, or any important context."><Textarea id="promotion-message" name="message" minLength={10} maxLength={3000} rows={6} required placeholder="What would you like to promote, and what would a successful partnership look like?" /></Field>
     <div className="booking-honeypot" aria-hidden="true"><Label htmlFor="promotion-website">Leave this field empty</Label><Input id="promotion-website" name="website" tabIndex={-1} autoComplete="off" /></div>
-    <div className="form-submit booking-form__submit"><Button type="submit" className="button-dark" disabled={busy}>{busy ? <><LoaderCircle size={16} className="booking-spinner" /> Sending inquiry…</> : <>Send promotion inquiry <ArrowRight size={16} /></>}</Button><p>Your inquiry goes directly to the team and your details are only used to respond.</p></div>
+    <div className="form-submit booking-form__submit"><Button type="submit" className="button-dark" disabled={busy}>{busy ? <><LoaderCircle size={16} className="booking-spinner" /> Sending inquiry…</> : <>Send promotion inquiry <ArrowRight size={16} /></>}</Button><p>Your inquiry goes to the team to respond. Read our <Link href="/privacy-policy">privacy policy</Link>.</p></div>
   </form>;
 }

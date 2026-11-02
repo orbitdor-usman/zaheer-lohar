@@ -7,7 +7,7 @@ export async function GET(request) {
   if (limited) return limited;
   try {
     const settings = await getSettings();
-    return success(settings.socialLinks);
+    return success(settings.socialLinks, undefined, { headers: { "Cache-Control": "public, max-age=0, s-maxage=60, stale-while-revalidate=300" } });
   } catch (error) {
     return handleApiError(error);
   }

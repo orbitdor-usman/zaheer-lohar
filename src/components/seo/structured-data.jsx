@@ -7,6 +7,7 @@ const structuredData = [
     "@id": `${siteUrl}/#artist`,
     name: artistName,
     url: siteUrl,
+    sameAs: ["https://www.youtube.com/channel/UCdv_JXKg3baC43xD-3hw33Q"],
     image: absoluteUrl("/images/aboutimage.png"),
     description: artistDescription,
     jobTitle: "Singer, songwriter, and performer",
